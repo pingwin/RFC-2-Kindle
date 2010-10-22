@@ -1,0 +1,19 @@
+Description:
+
+This is for anyone who has a kindle and are frustrated with the options for reading IETF RFC documents on the Kindle. 
+
+This is by far a perfect script, but it should be a good start for most documents thus far.
+
+TODO:
+ * Section Links
+
+
+Packages Required:
+
+* ImageMagick
+* KindleGen (http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000234621)
+
+
+Execution:
+./rfctxt2kindlehtml.py -i rfc1034.txt -o rfc1034.html && ./kindlegen rfc1034.html
+
