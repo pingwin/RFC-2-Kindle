@@ -9,20 +9,20 @@ Description:
 """
 
 import sys, logging, getopt, os
-try:
-    from PIL import Image, ImageDraw
-except ImportError, err:
-    print err
-    print "please install the python imaging library (PIL)"
-    sys.exit(2)
+
+_default_font = '/usr/share/cups/fonts/Monospace'
+_font = _default_font
 
 def usage():
+    global _default_font
     """ print usage message """
     print "Convert IETF RFC TXT file to HTML for kindlegen"
     print "-h --help    This message"
     print "-v           verbosity"
     print "-i --input   input file"
     print "-o --output  output file"
+    print "-f --font    font file to use for monospace images (default:%s)" %\
+          _default_font
     sys.exit(2)
 
 def find_open_file(c=0):
@@ -34,8 +34,10 @@ def find_open_file(c=0):
     return find_open_file(c)
 
 def create_image(picture_me):
+    global _font
     img = find_open_file()
-    os.system("convert -font /usr/share/cups/fonts/Monospace label:'%s' %s" % (picture_me.replace("'", "\'"), img))
+    os.system("convert -font %s label:'%s' %s" % \
+              (_font, picture_me.replace("'", "\'"), img))
     return img
 
 def is_image_part(line):
@@ -54,13 +56,15 @@ def is_image_part(line):
 
 def main():
     """ Begin process """
+    global _font
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   "hvi:o:",
+                                   "hvi:o:f:",
                                    [
                                        'help',
                                        'input',
-                                       'output'
+                                       'output',
+                                       'font'
                                        ])
     except getopt.GetoptError, err:
         logging.exception(err)
@@ -79,8 +83,16 @@ def main():
             input = a
         if opt in ('-o', '--output'):
             output = a
+        if opt in ('-f', '--font'):
+            _font = a
 
     if not input or not output:
+        usage()
+
+    try:
+        open(_font)
+    except:
+        print "Unable to find font: %s" % _font
         usage()
     
     input  = open(input,  'r')
