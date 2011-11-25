@@ -145,7 +145,7 @@ def main():
                 in_p = False
             continue
         
-        buffer.append(line.replace("\n", ''))
+        buffer.append(line.replace("\n", ' '))
 
     buffer.append('</body>')
     buffer = ''.join(buffer)
