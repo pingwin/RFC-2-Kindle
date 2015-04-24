@@ -18,3 +18,10 @@ Packages Required:
 Execution:
 ./rfctxt2kindlehtml.py -i rfc1034.txt -o rfc1034.html && ./kindlegen rfc1034.html
 
+
+
+Update:
+
+I haven't owned a kindle in a few years. So I haven't been maintaining this project. I'll happily accept pull requests, however I have no way of testing any fixes. 
+
+Fell free to fork and enjoy :)
