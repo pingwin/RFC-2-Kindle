@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+
 """
 Author: Brian Smith <pingwin@gmail.com>
 Date: 2010/10/21
@@ -10,7 +12,11 @@ Description:
 
 import sys, logging, getopt, os
 
-_default_font = '/usr/share/cups/fonts/Monospace'
+if sys.platform == "linux" or sys.platform == "linux2":
+    _default_font = '/usr/share/cups/fonts/Monospace'
+elif sys.platform == "darwin":
+    _default_font = '/System/Library/Fonts/Monaco.dfont'
+
 _font = _default_font
 
 def usage():
@@ -94,7 +100,7 @@ def main():
     except:
         print "Unable to find font: %s" % _font
         usage()
-    
+
     input  = open(input,  'r')
     output = open(output, 'w+')
     in_p   = False
@@ -119,7 +125,7 @@ def main():
                 in_toc = False
             continue
 
-        
+
         if line[:2] == '  ':
             if is_image_part(line):
                 # image
@@ -134,8 +140,8 @@ def main():
         if in_image:
             in_image = False
             buffer.append('<img src="%s" />' % create_image(''.join(image)))
-            
-        
+
+
         if len(line) < 2:
             if not in_p:
                 buffer.append('<p>')
@@ -144,7 +150,7 @@ def main():
                 buffer.append('</p><br />')
                 in_p = False
             continue
-        
+
         buffer.append(line.replace("\n", ' '))
 
     buffer.append('</body>')
